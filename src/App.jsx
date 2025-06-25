@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 
 // === SETUP YOUR SUPABASE ===
-const SUPABASE_URL = "https://muympxfudktsrqkvuzvd.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11eW1weGZ1ZGt0c3Jxa3Z1enZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4Njk2MjMsImV4cCI6MjA2NjQ0NTYyM30.SDU8ZWhg_txrpj-tOU357uRuAyrT1fDnhg1P153sr1s";
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const ADMIN_CODE = "bunmb2024"; // Set your admin code here for deletes
 
