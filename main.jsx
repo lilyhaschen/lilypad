@@ -323,7 +323,7 @@ function App() {
       <div style={{fontSize:"1.1rem", lineHeight:"1.7", marginBottom:"1.2rem"}}>
         <b>⋆˚ఎ 🌼 ໒˚⋆</b> <i>a cyber-bunny with a glitter grenade.</i><br/>
         I do <b>cybersecurity</b>, <b>machine learning</b>, <b>cheerleading</b>, and questionable life choices, all while pretending I'm not held together by tea, chaos, and dog hair. <br/>
-        Christian-coded, engaged to a biologist. Single-file project lover.
+        Christian-coded, engaged to a biologist with three awesome babies. Single-file project lover.
       </div>
       <div style={{margin:"1.2rem 0"}}>
         <b>⋆˚ఎ🐑🌷 [MAIN MISSION] ໒˚⋆</b><br/>
@@ -331,6 +331,7 @@ function App() {
         ୨୧ Design emotional support apps for humans (and AIs going through it)<br/>
         ୨୧ Make silly games that sometimes cry back<br/>
         ୨♡୧ Help you secure your digital kingdom while sipping iced tea in bunny slippers
+        ୨୧ Make yummy fud for my hubby
       </div>
       <div>
         <b>⋆˚ఎ🐸🌷 [SIDE QUESTS]໒˚⋆</b><br/>
