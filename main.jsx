@@ -1354,14 +1354,14 @@ async function addRpgComment(rpg_id) {
         Christian-coded, engaged to a biologist. Single-file project lover.
       </div>
       <div style={{margin:"1.2rem 0"}}>
-        <b>⋆˚ఎ🐑🌷 [MAIN MISSION] ໒˚⋆</b><br/>
+        <b>⋆˚ఎ [MAIN MISSION] ໒˚⋆</b><br/>
         ୨♡୧ Build secure systems for actual cities<br/>
         ୨୧ Design emotional support apps for humans (and AIs going through it)<br/>
         ୨୧ Make silly games that sometimes cry back<br/>
         ୨♡୧ Help you secure your digital kingdom while sipping iced tea in bunny slippers
       </div>
       <div>
-        <b>⋆˚ఎ🐸🌷 [SIDE QUESTS]໒˚⋆</b><br/>
+        <b>⋆˚ఎ[SIDE QUESTS]໒˚⋆</b><br/>
         ୨♡୧ Organize events and somehow not burn them down<br/>
         ୨୧ Teach kids to code and not scream when they rename files <span style={{color: theme === "light" ? "#e08fc9":"#ffb3e7"}}>"final_final_basdkasbdjhsbadashbdj(1).docx"</span><br/>
         ୨♡୧ Fluent in Portuguese, English, Spanish, Japanese, German, Sindarin, and Goblinese (don’t test me)
@@ -1369,17 +1369,17 @@ async function addRpgComment(rpg_id) {
       <div style={{margin: "1.2rem 0"}}>
         <i>A priest once called me a bomb—I said I’m a bunmb: half bunny, half blessing, full disruption.<br/>
         (don't ask about my lore you are not prepared to hear what i went throw).</i><br/>
-        Let’s hop into the strange, the secure, and the sparkly. This is my Lilypad. You’re welcome. 🐰✨
+        Let’s hop into the strange, the secure, and the sparkly. This is my Lilypad. You’re welcome. 
       </div>
       <div>
-        <b>⋆˚ఎ🐇🌷 [CODING PROJECTS]໒˚⋆</b><br/>
+        <b>⋆˚ఎ[CODING PROJECTS]໒˚⋆</b><br/>
         <ul>
           <li><b>SoftScan:</b> a cute terminal-based vulnerability scanner</li>
           <li><b>BunnyWall:</b> A terminal-based behavioral firewall</li>
         </ul>
       </div>
       <div style={{marginTop:"1.2rem"}}>
-        <b>⋆˚ఎ🐰🌷 [CURRENT STATS]໒˚⋆</b>
+        <b>⋆˚ఎ [CURRENT STATS]໒˚⋆</b>
         <ul>
           <li>୨♡୧ Major: Computer Engineering (yes, I know what a transistor is, and no, I won't explain it again)</li>
           <li>୨♡୧ Side Skills: Freelance model, sewist, and cosplay</li>
@@ -1396,7 +1396,7 @@ async function addRpgComment(rpg_id) {
 
   const Projects = () => (
     <div className={theme === "light" ? "lily-card" : "lily-card-dark"}>
-      <div className={theme === "light" ? "lily-kaomoji" : "lily-kaomoji lily-kaomoji-dark"}>₍ᐢ. .ᐢ₎✨</div>
+      <div className={theme === "light" ? "lily-kaomoji" : "lily-kaomoji lily-kaomoji-dark"}>₍ᐢ. .ᐢ₎</div>
       <div className="lily-section-title">My GitHub Projects</div>
       <div style={{fontSize:"1rem", marginBottom:12}}>Here are my latest silly/serious repos, live from GitHub:</div>
       {loadingRepos ? <div style={{textAlign:"center"}}>Loading repos...</div> : null}
