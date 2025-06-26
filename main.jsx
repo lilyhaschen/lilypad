@@ -1264,9 +1264,17 @@ async function addPic(e) {
   e.preventDefault();
   if (!picFile) return;
   const filename = `${Date.now()}_${picFile.name}`;
-  let { error } = await supabase.storage.from("gallery").upload(filename, picFile);
-  if (error) { alert("Error uploading!"); return; }
-  let url = supabase.storage.from("gallery").getPublicUrl(filename).data.publicUrl;
+  const { error: uploadError } = await supabase.storage.from("gallery").upload(filename, picFile);
+  if (uploadError) {
+    alert("Error uploading: " + uploadError.message);
+    return;
+  }
+  const { data } = supabase.storage.from("gallery").getPublicUrl(filename);
+  const url = data?.publicUrl;
+  if (!url) {
+    alert("Could not get image URL!");
+    return;
+  }
   const { error: dbError } = await supabase.from("gallery").insert([
     { url, caption: picCaption }
   ]);
@@ -1296,9 +1304,17 @@ async function addRpg(e) {
   e.preventDefault();
   if (!rpgFile) return;
   const filename = `${Date.now()}_${rpgFile.name}`;
-  let { error } = await supabase.storage.from("rpg").upload(filename, rpgFile);
-  if (error) { alert("Error uploading!"); return; }
-  let url = supabase.storage.from("rpg").getPublicUrl(filename).data.publicUrl;
+  const { error: uploadError } = await supabase.storage.from("rpg").upload(filename, rpgFile);
+  if (uploadError) {
+    alert("Error uploading: " + uploadError.message);
+    return;
+  }
+  const { data } = supabase.storage.from("rpg").getPublicUrl(filename);
+  const url = data?.publicUrl;
+  if (!url) {
+    alert("Could not get RPG file URL!");
+    return;
+  }
   const { error: dbError } = await supabase.from("rpg").insert([
     { title: rpgTitle, description: rpgDescription, file_url: url }
   ]);
