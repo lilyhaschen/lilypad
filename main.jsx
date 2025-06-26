@@ -617,7 +617,7 @@ function App() {
   const [theme, setTheme] = useState("light");
   const [page, setPage] = useState("home");
   const [kaomoji, setKaomoji] = useState(randomItem(kaomojis));
-  const [sillykaomoji, setsillyKaomoji] = useState(randomItem(kaomojis));
+  const [sillykaomoji, setSillyKaomoji] = useState(randomItem(sillykaomojis));
   const [surprise, setSurprise] = useState({sillykaomoji: randomItem(sillykaomojis), text: randomItem(sillyTexts)});
   function handleSurprise() {
     setSurprise({sillykaomoji: randomItem(sillykaomojis), text: randomItem(sillyTexts)});
@@ -1042,10 +1042,10 @@ function App() {
         fontSize: "1.2rem",
         color: theme === "light" ? "#d14370" : "#ffb3e7",
         margin: "0.7rem 0"
-      }}>
-        {surprise.kaomoji} <br />
-        <span style={{fontSize:"1.08rem", fontStyle:"italic"}}>{surprise.text}</span>
-      </div>
+        }}>
+  {surprise.sillykaomoji} <br />
+  <span style={{fontSize:"1.08rem", fontStyle:"italic"}}>{surprise.text}</span>
+</div>
 
       {/* PAGE CONTENT */}
       {page==="home" && <AboutMe />}
