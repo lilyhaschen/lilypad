@@ -429,7 +429,7 @@ const sillyTexts = [
   "My code compiles but my brain doesn’t.",
   "System overloaded: Too much adorable.",
   "Daily quest: Hug a bunny.",
-  "If found, please return to Lily’s Lilypat.",
+  "If found, please return to Lily’s Lilypad.",
   "Access denied: Too cute for this world.",
   "Secret Level Unlocked: Kaomoji Zone!",
   "Achievement: Remembered to blink.",
@@ -1328,7 +1328,7 @@ async function addRpgComment(rpg_id) {
   const AboutMe = () => (
     <div className={theme === "light" ? "lily-card" : "lily-card-dark"}>
       <div className={theme === "light" ? "lily-kaomoji" : "lily-kaomoji lily-kaomoji-dark"}>{kaomoji}</div>
-      <h1 className="lily-section-title" style={{ marginBottom: 0 }}>🌸 Welcome to my Lilypat 🐇💻</h1>
+      <h1 className="lily-section-title" style={{ marginBottom: 0 }}>🌸 Welcome to my Lilypad 🐇💻</h1>
       <div style={{marginBottom:"1.2rem", color: theme === "light" ? "#b75aa6":"#ffb3e7"}}>
         (｡•̀ᴗ-)✧ Hi, I’m <b>Lily</b>! <a href="https://github.com/lilyhaschen" target="_blank" rel="noopener noreferrer">@lilyhaschen</a>
       </div>
@@ -1357,7 +1357,7 @@ async function addRpgComment(rpg_id) {
       <div style={{margin: "1.2rem 0"}}>
         <i>A priest once called me a bomb—I said I’m a bunmb: half bunny, half blessing, full disruption.<br/>
         (don't ask about my lore you are not prepared to hear what i went throw).</i><br/>
-        Let’s hop into the strange, the secure, and the sparkly. This is my Lilypat. You’re welcome. 🐰✨
+        Let’s hop into the strange, the secure, and the sparkly. This is my Lilypad. You’re welcome. 🐰✨
       </div>
       <div>
         <b>⋆˚ఎ🐇🌷 [CODING PROJECTS]໒˚⋆</b><br/>
