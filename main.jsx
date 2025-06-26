@@ -691,11 +691,11 @@ function App() {
   }
 
   // --- Mutators ---
-  async function addPost(e) {
+ async function addPost(e) {
   e.preventDefault();
   if (!blogTitle || !blogContent) return;
   const { error } = await supabase.from("posts").insert([
-    { title: blogTitle, content: blogContent, created_at: new created_at().toLocaleString() }
+    { title: blogTitle, content: blogContent }
   ]);
   if (error) {
     alert("Supabase insert error: " + error.message);
@@ -705,75 +705,84 @@ function App() {
   setBlogContent("");
   fetchPosts();
 }
-  async function deletePost(id) {
-    if (window.prompt("Admin code to delete?") !== ADMIN_CODE) return;
-    await supabase.from("posts").delete().eq("id", id);
-    await supabase.from("comments").delete().eq("post_id", id);
-    fetchPosts();
+
+async function addComment(post_id) {
+  let text = commentInputs[post_id] || "";
+  if (!text) return;
+  const { error } = await supabase.from("comments").insert([
+    { post_id, content: text }
+  ]);
+  if (error) {
+    alert("Supabase insert error: " + error.message);
+    return;
   }
-  async function addComment(post_id) {
-    let text = commentInputs[post_id] || "";
-    if (!text) return;
-    await supabase.from("comments").insert([{ post_id, content: text, created_at: new created_at().toLocaleTimeString() }]);
-    setCommentInputs({ ...commentInputs, [post_id]: "" });
-    fetchPosts();
+  setCommentInputs({ ...commentInputs, [post_id]: "" });
+  fetchPosts();
+}
+
+async function addPic(e) {
+  e.preventDefault();
+  if (!picFile) return;
+  const filename = `${Date.now()}_${picFile.name}`;
+  let { error } = await supabase.storage.from("gallery").upload(filename, picFile);
+  if (error) { alert("Error uploading!"); return; }
+  let url = supabase.storage.from("gallery").getPublicUrl(filename).data.publicUrl;
+  const { error: dbError } = await supabase.from("gallery").insert([
+    { url, caption: picCaption }
+  ]);
+  if (dbError) {
+    alert("Supabase insert error: " + dbError.message);
+    return;
   }
-  async function addPic(e) {
-    e.preventDefault();
-    if (!picFile) return;
-    const filename = `${created_at.now()}_${picFile.name}`;
-    let { error } = await supabase.storage.from("gallery").upload(filename, picFile);
-    if (error) { alert("Error uploading!"); return; }
-    let url = supabase.storage.from("gallery").getPublicUrl(filename).data.publicUrl;
-    await supabase.from("gallery").insert([{ url, caption: picCaption, created_at: new created_at().toLocaleString() }]);
-    setPicFile(null); setPicCaption("");
-    fetchGallery();
+  setPicFile(null); setPicCaption("");
+  fetchGallery();
+}
+
+async function addRandom(e) {
+  e.preventDefault();
+  if (!randomText) return;
+  const { error } = await supabase.from("randoms").insert([
+    { content: randomText }
+  ]);
+  if (error) {
+    alert("Supabase insert error: " + error.message);
+    return;
   }
-  async function deletePic(id) {
-    if (window.prompt("Admin code to delete?") !== ADMIN_CODE) return;
-    let { data: pic } = await supabase.from("gallery").select("*").eq("id", id).single();
-    if (pic && pic.url) {
-      const path = pic.url.split("/storage/v1/object/public/gallery/")[1];
-      await supabase.storage.from("gallery").remove([path]);
-    }
-    await supabase.from("gallery").delete().eq("id", id);
-    fetchGallery();
+  setRandomText("");
+  fetchRandoms();
+}
+
+async function addRpg(e) {
+  e.preventDefault();
+  if (!rpgFile) return;
+  const filename = `${Date.now()}_${rpgFile.name}`;
+  let { error } = await supabase.storage.from("rpg").upload(filename, rpgFile);
+  if (error) { alert("Error uploading!"); return; }
+  let url = supabase.storage.from("rpg").getPublicUrl(filename).data.publicUrl;
+  const { error: dbError } = await supabase.from("rpg").insert([
+    { title: rpgTitle, description: rpgDescription, file_url: url }
+  ]);
+  if (dbError) {
+    alert("Supabase insert error: " + dbError.message);
+    return;
   }
-  async function addRandom(e) {
-    e.preventDefault();
-    if (!randomText) return;
-    await supabase.from("randoms").insert([{ content: randomText, created_at: new created_at().toLocaleString() }]);
-    setRandomText("");
-    fetchRandoms();
+  setRpgFile(null); setRpgTitle(""); setRpgDescription("");
+  fetchRpg();
+}
+
+async function addRpgComment(rpg_id) {
+  let text = rpgCommentInputs[rpg_id] || "";
+  if (!text) return;
+  const { error } = await supabase.from("rpg_comments").insert([
+    { rpg_id, content: text }
+  ]);
+  if (error) {
+    alert("Supabase insert error: " + error.message);
+    return;
   }
-  async function deleteRandom(id) {
-    if (window.prompt("Admin code to delete?") !== ADMIN_CODE) return;
-    await supabase.from("randoms").delete().eq("id", id);
-    fetchRandoms();
-  }
-  async function addRpg(e) {
-    e.preventDefault();
-    if (!rpgFile) return;
-    const filename = `${created_at.now()}_${rpgFile.name}`;
-    let { error } = await supabase.storage.from("rpg").upload(filename, rpgFile);
-    if (error) { alert("Error uploading!"); return; }
-    let url = supabase.storage.from("rpg").getPublicUrl(filename).data.publicUrl;
-    await supabase.from("rpg").insert([{ title: rpgTitle, description: rpgDescription, file_url: url, created_at: new created_at().toLocaleString() }]);
-    setRpgFile(null); setRpgTitle(""); setRpgDescription("");
-    fetchRpg();
-  }
-  async function deleteRpg(id) {
-    if (window.prompt("Admin code to delete?") !== ADMIN_CODE) return;
-    await supabase.from("rpg").delete().eq("id", id);
-    fetchRpg();
-  }
-  async function addRpgComment(rpg_id) {
-    let text = rpgCommentInputs[rpg_id] || "";
-    if (!text) return;
-    await supabase.from("rpg_comments").insert([{ rpg_id, content: text, created_at: new created_at().toLocaleTimeString() }]);
-    setRpgCommentInputs({ ...rpgCommentInputs, [rpg_id]: "" });
-    fetchRpg();
-  }
+  setRpgCommentInputs({ ...rpgCommentInputs, [rpg_id]: "" });
+  fetchRpg();
+}
 
   // === PAGE COMPONENTS ===
   // ... all components from your last paste (AboutMe, Projects, Blog, Gallery, RandomStuff, Rpg) ...
