@@ -130,12 +130,12 @@ input[type="text"]:focus, textarea:focus { outline: 2px solid #ffc5e2; }
 
 // --- Data ---
 const kaomojis = [
-   `       ◜ ͡ ͡ ◝/n
+   "       ◜ ͡ ͡ ◝/n
   　 ૮ ﾉ ྀི 𓏼 ˊ͈ ˔ ) ··﹖/n
   　 ╭◜◝ ͡ ʿʿ 𝜗𝜚 ˒　　　/n　　　
   　 ૮' 　　　 ꒱ 　/n
   　　 )　ﾉ,,_、 ﾉヽ) 　/n
-  　　し'し'　l ﾉ`,
+  　　し'し'　l ﾉ" ,
   `ᘏ ⑅ ᘏ   ഒ    zᶻ/n
   ꒰˶  - ˕ -꒱ ⌒)ᦱ`,
   `╭◜◝  ͡  ◜◝ ╮/n
