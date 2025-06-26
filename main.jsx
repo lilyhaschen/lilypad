@@ -695,7 +695,7 @@ function App() {
   e.preventDefault();
   if (!blogTitle || !blogContent) return;
   const { error } = await supabase.from("posts").insert([
-    { title: blogTitle, content: blogContent, date: new Date().toLocaleString() }
+    { title: blogTitle, content: blogContent, created_at: new created_at().toLocaleString() }
   ]);
   if (error) {
     alert("Supabase insert error: " + error.message);
@@ -714,18 +714,18 @@ function App() {
   async function addComment(post_id) {
     let text = commentInputs[post_id] || "";
     if (!text) return;
-    await supabase.from("comments").insert([{ post_id, content: text, date: new Date().toLocaleTimeString() }]);
+    await supabase.from("comments").insert([{ post_id, content: text, created_at: new created_at().toLocaleTimeString() }]);
     setCommentInputs({ ...commentInputs, [post_id]: "" });
     fetchPosts();
   }
   async function addPic(e) {
     e.preventDefault();
     if (!picFile) return;
-    const filename = `${Date.now()}_${picFile.name}`;
+    const filename = `${created_at.now()}_${picFile.name}`;
     let { error } = await supabase.storage.from("gallery").upload(filename, picFile);
     if (error) { alert("Error uploading!"); return; }
     let url = supabase.storage.from("gallery").getPublicUrl(filename).data.publicUrl;
-    await supabase.from("gallery").insert([{ url, caption: picCaption, date: new Date().toLocaleString() }]);
+    await supabase.from("gallery").insert([{ url, caption: picCaption, created_at: new created_at().toLocaleString() }]);
     setPicFile(null); setPicCaption("");
     fetchGallery();
   }
@@ -742,7 +742,7 @@ function App() {
   async function addRandom(e) {
     e.preventDefault();
     if (!randomText) return;
-    await supabase.from("randoms").insert([{ content: randomText, date: new Date().toLocaleString() }]);
+    await supabase.from("randoms").insert([{ content: randomText, created_at: new created_at().toLocaleString() }]);
     setRandomText("");
     fetchRandoms();
   }
@@ -754,11 +754,11 @@ function App() {
   async function addRpg(e) {
     e.preventDefault();
     if (!rpgFile) return;
-    const filename = `${Date.now()}_${rpgFile.name}`;
+    const filename = `${created_at.now()}_${rpgFile.name}`;
     let { error } = await supabase.storage.from("rpg").upload(filename, rpgFile);
     if (error) { alert("Error uploading!"); return; }
     let url = supabase.storage.from("rpg").getPublicUrl(filename).data.publicUrl;
-    await supabase.from("rpg").insert([{ title: rpgTitle, description: rpgDescription, file_url: url, date: new Date().toLocaleString() }]);
+    await supabase.from("rpg").insert([{ title: rpgTitle, description: rpgDescription, file_url: url, created_at: new created_at().toLocaleString() }]);
     setRpgFile(null); setRpgTitle(""); setRpgDescription("");
     fetchRpg();
   }
@@ -770,7 +770,7 @@ function App() {
   async function addRpgComment(rpg_id) {
     let text = rpgCommentInputs[rpg_id] || "";
     if (!text) return;
-    await supabase.from("rpg_comments").insert([{ rpg_id, content: text, date: new Date().toLocaleTimeString() }]);
+    await supabase.from("rpg_comments").insert([{ rpg_id, content: text, created_at: new created_at().toLocaleTimeString() }]);
     setRpgCommentInputs({ ...rpgCommentInputs, [rpg_id]: "" });
     fetchRpg();
   }
