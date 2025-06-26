@@ -1262,19 +1262,15 @@ async function addComment(post_id) {
 
 async function addPic(e) {
   e.preventDefault();
-  if (!picFile) return;
+  if (!picFile) { alert("No file!"); return; }
   const filename = `${Date.now()}_${picFile.name}`;
-  const { error: uploadError } = await supabase.storage.from("gallery").upload(filename, picFile);
-  if (uploadError) {
-    alert("Error uploading: " + uploadError.message);
+  const { error } = await supabase.storage.from("gallery").upload(filename, picFile);
+  if (error) {
+    alert("Error uploading: " + error.message);
+    console.error(error);
     return;
   }
-  const { data } = supabase.storage.from("gallery").getPublicUrl(filename);
-  const url = data?.publicUrl;
-  if (!url) {
-    alert("Could not get image URL!");
-    return;
-  }
+  let url = supabase.storage.from("gallery").getPublicUrl(filename).data.publicUrl;
   const { error: dbError } = await supabase.from("gallery").insert([
     { url, caption: picCaption }
   ]);
