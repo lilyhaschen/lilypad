@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { createClient } from "@supabase/supabase-js";
 
-// === Lily's Supabase Config ===
+// === SUPABASE ===
 const SUPABASE_URL = "https://muympxfudktsrqkvuzvd.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz..."
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11eW1weGZ1ZGt0c3Jxa3Z1enZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4Njk2MjMsImV4cCI6MjA2NjQ0NTYyM30.SDU8ZWhg_txrpj-tOU357uRuAyrT1fDnhg1P153sr1s";
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-const ADMIN_CODE = "bunmb2024"; // Set your admin code here for deletes
+const ADMIN_CODE = "bunmb2024"; // change this if you want!
 
 // === STYLES (auto-injects) ===
 const style = `
@@ -68,6 +68,7 @@ body {
 }
 .lily-nav {
   display: flex; gap: 0.5rem; justify-content: center; margin: 0.5rem;
+  flex-wrap: wrap;
 }
 .lily-kaomoji {
   font-family: "monospace", "Fira Mono", "Segoe UI";
@@ -127,6 +128,7 @@ input[type="text"]:focus, textarea:focus { outline: 2px solid #ffc5e2; }
 .lily-dark input[type="text"]:focus, .lily-dark textarea:focus { outline: 2px solid #ffb3e7; }
 `;
 
+// --- Data ---
 const kaomojis = [
   "૮꒰ ˶• ༝ •˶꒱ა ♡", "₍ᐢ. .ᐢ₎", "╭◜◝  ͡  ◜◝ ╮", "૮Ꮚ ⑅ ´ ˘ ` Ꮚა.",
   "˚₊‧꒰ა ₍ᐢ.  ̫.ᐢ₎ ໒꒱ ‧₊˚", "૮₍  ˶•⤙•˶ ₎ა ./づ~ 🍓",
@@ -134,12 +136,17 @@ const kaomojis = [
   "ଘ꒰ა´͈ ᐜ `͈꒱ა* ✩", "૮₍ •̀ ⩊ •́ ₎ა (  ⊃⊂)", "૮꒰ ˶• ༝ •˶꒱ა  /ᐢ. .ᐢ\\",
   "૮₍ ˶•⤙•˶ ₎ა 🍓",
 ];
+const sillyTexts = [
+  "Tea-fueled and slightly menacing!", "Bunny mode: activated.", "Running on glitter and questionable choices.",
+  "Feeling like a cryptid in slippers!", "99% kaomoji, 1% bug fix.", "Ready to hack the mainframe (again).",
+  "Wishing for infinite iced tea.", "Bunmb on the loose!", "Stressed, blessed, and bunny-obsessed.",
+  "Awaiting cosmic alignment...", "I debug with sparkles.", "Kaomoji power-up!"
+];
 const gothCrosses = [
   "⁺‧₊˚ ཐི⋆♱⋆ཋྀ ˚₊‧⁺", ".◞ ♱ ◟.", "─── ⋆⋅ ♰ ⋅⋆ ───",
   "˗ˏˋ𓆩†𓆪ˊˎ˗", "⭒ ༺♰༻ ⭒", "˚₊‧꒰ა ♱ ໒꒱ ‧₊˚", "‿̩͙⊱༒︎༻♱༺༒︎⊰‿̩͙"
 ];
 function randomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-
 function injectStyle() {
   if (!document.getElementById("lily-css")) {
     const s = document.createElement("style");
@@ -149,35 +156,47 @@ function injectStyle() {
   }
 }
 
-// --- MAIN APP ---
+// --- Main App ---
 function App() {
-  // Inject styles
   useEffect(injectStyle, []);
-
   const [theme, setTheme] = useState("light");
   const [page, setPage] = useState("home");
   const [kaomoji, setKaomoji] = useState(randomItem(kaomojis));
+  const [surprise, setSurprise] = useState({kaomoji: randomItem(kaomojis), text: randomItem(sillyTexts)});
+  function handleSurprise() {
+    setSurprise({kaomoji: randomItem(kaomojis), text: randomItem(sillyTexts)});
+  }
 
-  // Blog states
+  // --- GitHub Projects ---
+  const githubUser = "lilyhaschen";
+  const [repos, setRepos] = useState([]);
+  const [loadingRepos, setLoadingRepos] = useState(false);
+  useEffect(() => {
+    if (page === "projects") {
+      setLoadingRepos(true);
+      fetch(`https://api.github.com/users/${githubUser}/repos?sort=updated`)
+        .then(r => r.json())
+        .then(arr => { setRepos(Array.isArray(arr) ? arr : []); setLoadingRepos(false); });
+    }
+  }, [page]);
+
+  // === Blog
   const [blogTitle, setBlogTitle] = useState("");
   const [blogContent, setBlogContent] = useState("");
   const [posts, setPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(false);
   const [commentInputs, setCommentInputs] = useState({});
   const [comments, setComments] = useState({});
-
-  // Gallery states
+  // === Gallery
   const [picFile, setPicFile] = useState(null);
   const [picCaption, setPicCaption] = useState("");
   const [gallery, setGallery] = useState([]);
   const [loadingGallery, setLoadingGallery] = useState(false);
-
-  // Random stuff states
+  // === Random Stuff
   const [randomText, setRandomText] = useState("");
   const [randoms, setRandoms] = useState([]);
   const [loadingRandoms, setLoadingRandoms] = useState(false);
-
-  // RPG states
+  // === RPG
   const [rpgFile, setRpgFile] = useState(null);
   const [rpgTitle, setRpgTitle] = useState("");
   const [rpgDescription, setRpgDescription] = useState("");
@@ -217,7 +236,6 @@ function App() {
     let { data } = await supabase.from("rpg").select("*").order("id", { ascending: false });
     setRpg(data || []);
     setLoadingRpg(false);
-    // rpg comments
     let out = {};
     if (data) for (const r of data) {
       let { data: c } = await supabase.from("rpg_comments").select("*").eq("rpg_id", r.id);
@@ -247,11 +265,9 @@ function App() {
     setCommentInputs({ ...commentInputs, [post_id]: "" });
     fetchPosts();
   }
-
   async function addPic(e) {
     e.preventDefault();
     if (!picFile) return;
-    // Upload to Supabase Storage
     const filename = `${Date.now()}_${picFile.name}`;
     let { error } = await supabase.storage.from("gallery").upload(filename, picFile);
     if (error) { alert("Error uploading!"); return; }
@@ -270,7 +286,6 @@ function App() {
     await supabase.from("gallery").delete().eq("id", id);
     fetchGallery();
   }
-
   async function addRandom(e) {
     e.preventDefault();
     if (!randomText) return;
@@ -283,7 +298,6 @@ function App() {
     await supabase.from("randoms").delete().eq("id", id);
     fetchRandoms();
   }
-
   async function addRpg(e) {
     e.preventDefault();
     if (!rpgFile) return;
@@ -323,7 +337,7 @@ function App() {
       <div style={{fontSize:"1.1rem", lineHeight:"1.7", marginBottom:"1.2rem"}}>
         <b>⋆˚ఎ 🌼 ໒˚⋆</b> <i>a cyber-bunny with a glitter grenade.</i><br/>
         I do <b>cybersecurity</b>, <b>machine learning</b>, <b>cheerleading</b>, and questionable life choices, all while pretending I'm not held together by tea, chaos, and dog hair. <br/>
-        Christian-coded, engaged to a biologist with three awesome babies. Single-file project lover.
+        Christian-coded, engaged to a biologist. Single-file project lover.
       </div>
       <div style={{margin:"1.2rem 0"}}>
         <b>⋆˚ఎ🐑🌷 [MAIN MISSION] ໒˚⋆</b><br/>
@@ -331,7 +345,6 @@ function App() {
         ୨୧ Design emotional support apps for humans (and AIs going through it)<br/>
         ୨୧ Make silly games that sometimes cry back<br/>
         ୨♡୧ Help you secure your digital kingdom while sipping iced tea in bunny slippers
-        ୨୧ Make yummy fud for my hubby
       </div>
       <div>
         <b>⋆˚ఎ🐸🌷 [SIDE QUESTS]໒˚⋆</b><br/>
@@ -367,23 +380,40 @@ function App() {
     </div>
   );
 
-  // --- Projects is just your GitHub link ---
   const Projects = () => (
     <div className={theme === "light" ? "lily-card" : "lily-card-dark"}>
       <div className={theme === "light" ? "lily-kaomoji" : "lily-kaomoji lily-kaomoji-dark"}>₍ᐢ. .ᐢ₎✨</div>
-      <div className="lily-section-title">GitHub Projects</div>
+      <div className="lily-section-title">My GitHub Projects</div>
+      <div style={{fontSize:"1rem", marginBottom:12}}>Here are my latest silly/serious repos, live from GitHub:</div>
+      {loadingRepos ? <div style={{textAlign:"center"}}>Loading repos...</div> : null}
       <div>
-        Find my silly (and serious) stuff at
-        <br/>
-        <a href="https://github.com/lilyhaschen" target="_blank" rel="noopener noreferrer" style={{fontWeight:"bold", fontSize:"1.09rem"}}>@lilyhaschen on GitHub</a>
+        {repos.map(repo => (
+          <div key={repo.id} style={{
+            background: theme === "light" ? "#ffe4f4cc":"#1a0000cc",
+            border: "1px solid #ffd2ea",
+            borderRadius: "1.1rem",
+            margin: "1rem 0",
+            padding: "1.1rem"
+          }}>
+            <a href={repo.html_url} target="_blank" rel="noopener noreferrer" style={{fontWeight:"bold", fontSize:"1.09rem"}}>{repo.name}</a>
+            <div style={{fontSize:"0.98rem", margin:"0.4rem 0"}}>{repo.description}</div>
+            <div style={{fontSize:"0.8rem"}}>
+              {repo.language && <span style={{marginRight:"1.2rem"}}>💻 {repo.language}</span>}
+              <span>★ {repo.stargazers_count}</span>
+              <span style={{marginLeft:"1.2rem"}}>Last update: {repo.updated_at.slice(0,10)}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{fontSize:"0.92rem", marginTop:"1rem", textAlign:"center", opacity:0.8}}>
+        GitHub: <b>@{githubUser}</b> 🐇
       </div>
     </div>
   );
 
-  // Blog & Comments
   const Blog = () => (
     <div className={theme === "light" ? "lily-card" : "lily-card-dark"}>
-      <div style={{ fontSize: "2rem", margin: "1rem 0" }}>૮꒰ ˶• ༝ •˶꒱ა ♡</div>
+      <div className={theme === "light" ? "lily-kaomoji" : "lily-kaomoji lily-kaomoji-dark"}>૮꒰ ˶• ༝ •˶꒱ა ♡</div>
       <div className="lily-section-title">Blog & Kaomoji Diary</div>
       <form onSubmit={addPost} style={{ marginBottom: "1.2rem" }}>
         <input type="text" placeholder="Blog post title" value={blogTitle} onChange={e => setBlogTitle(e.target.value)} />
@@ -392,7 +422,7 @@ function App() {
         <br />
         <button className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"}>Post</button>
       </form>
-      {loadingPosts ? <div>Loading...</div> : null}
+      {loadingPosts ? <div style={{textAlign:"center"}}>Loading...</div> : null}
       <div>
         {posts.map(post =>
           <div key={post.id} style={{
@@ -425,17 +455,16 @@ function App() {
     </div>
   );
 
-  // Gallery
   const Gallery = () => (
     <div className={theme === "light" ? "lily-card" : "lily-card-dark"}>
-      <div style={{ fontSize: "2rem", margin: "1rem 0" }}>૮꒰ ˶• ༝ •˶꒱ა ♡</div>
+      <div className={theme === "light" ? "lily-kaomoji" : "lily-kaomoji lily-kaomoji-dark"}>૮꒰ ˶• ༝ •˶꒱ა ♡</div>
       <div className="lily-section-title">Gallery</div>
       <form onSubmit={addPic} style={{ margin: "1.2rem 0" }}>
         <input type="file" accept="image/*" onChange={e => setPicFile(e.target.files[0])} />
         <input type="text" placeholder="caption (optional)" value={picCaption} onChange={e => setPicCaption(e.target.value)} />
         <button className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"}>Upload</button>
       </form>
-      {loadingGallery ? <div>Loading...</div> : null}
+      {loadingGallery ? <div style={{textAlign:"center"}}>Loading...</div> : null}
       <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
         {gallery.map(pic =>
           <div key={pic.id} style={{
@@ -454,16 +483,15 @@ function App() {
     </div>
   );
 
-  // Random Stuff
   const RandomStuff = () => (
     <div className={theme === "light" ? "lily-card" : "lily-card-dark"}>
-      <div style={{ fontSize: "2rem", margin: "1rem 0" }}>૮꒰ ˶• ༝ •˶꒱ა ♡</div>
+      <div className={theme === "light" ? "lily-kaomoji" : "lily-kaomoji lily-kaomoji-dark"}>૮꒰ ˶• ༝ •˶꒱ა ♡</div>
       <div className="lily-section-title">Random Stuff</div>
       <form onSubmit={addRandom} style={{ marginBottom: "1.2rem" }}>
         <input type="text" placeholder="Random text, idea, meme, fact..." value={randomText} onChange={e => setRandomText(e.target.value)} />
         <button className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"}>Post</button>
       </form>
-      {loadingRandoms ? <div>Loading...</div> : null}
+      {loadingRandoms ? <div style={{textAlign:"center"}}>Loading...</div> : null}
       <div>
         {randoms.map(item =>
           <div key={item.id} style={{
@@ -482,10 +510,9 @@ function App() {
     </div>
   );
 
-  // RPG Table
   const Rpg = () => (
     <div className={theme === "light" ? "lily-card" : "lily-card-dark"}>
-      <div style={{ fontSize: "2rem", margin: "1rem 0" }}>૮꒰ ˶• ༝ •˶꒱ა ♡</div>
+      <div className={theme === "light" ? "lily-kaomoji" : "lily-kaomoji lily-kaomoji-dark"}>૮꒰ ˶• ༝ •˶꒱ა ♡</div>
       <div className="lily-section-title">RPG Table</div>
       <form onSubmit={addRpg} style={{ margin: "1.2rem 0" }}>
         <input type="file" onChange={e => setRpgFile(e.target.files[0])} />
@@ -493,7 +520,7 @@ function App() {
         <input type="text" placeholder="Description" value={rpgDescription} onChange={e => setRpgDescription(e.target.value)} />
         <button className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"}>Upload RPG File</button>
       </form>
-      {loadingRpg ? <div>Loading...</div> : null}
+      {loadingRpg ? <div style={{textAlign:"center"}}>Loading...</div> : null}
       <div>
         {rpg.map(r =>
           <div key={r.id} style={{
@@ -529,53 +556,60 @@ function App() {
     </div>
   );
 
-  // --- Main Layout ---
+  // --- Layout ---
   return (
     <div className={theme === "light" ? "lily-bg-light" : "lily-bg-dark lily-dark"}>
       {/* NAV */}
       <nav className="lily-nav" style={{marginTop:"1.1rem"}}>
+        <button className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"} onClick={()=>setPage("home")}>About</button>
+        <button className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"} onClick={()=>setPage("projects")}>Projects</button>
+        <button className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"} onClick={()=>setPage("blog")}>Blog</button>
+        <button className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"} onClick={()=>setPage("gallery")}>Gallery</button>
+        <button className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"} onClick={()=>setPage("random")}>Random</button>
+        <button className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"} onClick={()=>setPage("rpg")}>RPG</button>
         <button className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"}
-          onClick={()=>setPage("home")}>About Me</button>
-        <button className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"}
-          onClick={()=>setPage("projects")}>Projects</button>
-        <button className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"}
-          onClick={()=>setPage("blog")}>Blog</button>
-        <button className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"}
-          onClick={()=>setPage("gallery")}>Gallery</button>
-        <button className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"}
-          onClick={()=>setPage("random")}>Random</button>
-        <button className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"}
-          onClick={()=>setPage("rpg")}>RPG</button>
-        <button
-          className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"}
           onClick={() => setTheme(theme==="light"?"dark":"light")}
-        >
-          {theme==="light" ? "Gothic Mode 🕯️" : "Cute Mode 🌸"}
-        </button>
+        >{theme==="light" ? "🕸️ Gothic" : "🌸 Cutesy"}</button>
+        <button className={theme === "light" ? "lily-btn" : "lily-btn lily-btn-dark"}
+          style={{marginLeft: 10, fontWeight:"bold"}}
+          onClick={handleSurprise}
+        >Surprise Me!</button>
       </nav>
 
       {/* GOTHIC crosses */}
       {theme==="dark" && <div className="lily-goth">{randomItem(gothCrosses)}</div>}
 
-      {/* PAGES */}
-      {page==="home" && <AboutMe/>}
-      {page==="projects" && <Projects/>}
-      {page==="blog" && <Blog/>}
-      {page==="gallery" && <Gallery/>}
-      {page==="random" && <RandomStuff/>}
-      {page==="rpg" && <Rpg/>}
+      {/* SURPRISE KAOMOJI/TEXT */}
+      <div style={{
+        textAlign: "center",
+        fontFamily: "monospace",
+        fontSize: "1.2rem",
+        color: theme === "light" ? "#d14370" : "#ffb3e7",
+        margin: "0.7rem 0"
+      }}>
+        {surprise.kaomoji} <br />
+        <span style={{fontSize:"1.08rem", fontStyle:"italic"}}>{surprise.text}</span>
+      </div>
+
+      {/* PAGE CONTENT */}
+      {page==="home" && <AboutMe />}
+      {page==="projects" && <Projects />}
+      {page==="blog" && <Blog />}
+      {page==="gallery" && <Gallery />}
+      {page==="random" && <RandomStuff />}
+      {page==="rpg" && <Rpg />}
 
       {/* FOOTER */}
       <div className="lily-footer">
-        {theme==="light" ?
-          <span>૮꒰ ˶• ༝ •˶꒱ა  /ᐢ. .ᐢ\  • Powered by Lily’s kaomojis and glitter code</span>
-        :
-          <span>⭒ ༺♰༻ ⭒ 𓆩†𓆪 Bunnies in darkness still hop 𓆩†𓆪 ⭒ ༺♰༻ ⭒</span>
+        {theme==="light"
+          ? "૮꒰ ˶• ༝ •˶꒱ა  /ᐢ. .ᐢ\\  • Powered by Lily’s kaomojis and glitter code"
+          : "⭒ ༺♰༻ ⭒ 𓆩†𓆪 Bunnies in darkness still hop 𓆩†𓆪 ⭒ ༺♰༻ ⭒"
         }
       </div>
     </div>
   );
 }
 
-// --- React 18+ mount ---
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+// --- Mount to page (if not using main.jsx for entry, wrap this with ReactDOM.createRoot)
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
