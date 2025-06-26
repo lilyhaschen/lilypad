@@ -612,4 +612,3 @@ function App() {
 
 // --- Mount to page (if not using main.jsx for entry, wrap this with ReactDOM.createRoot)
 ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-
