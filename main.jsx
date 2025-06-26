@@ -790,7 +790,7 @@ async function addRpgComment(rpg_id) {
       <div className={theme === "light" ? "lily-kaomoji" : "lily-kaomoji lily-kaomoji-dark"}>{kaomoji}</div>
       <h1 className="lily-section-title" style={{ marginBottom: 0 }}>🌸 Welcome to my Lilypat 🐇💻</h1>
       <div style={{marginBottom:"1.2rem", color: theme === "light" ? "#b75aa6":"#ffb3e7"}}>
-        (｡•̀ᴗ-)✧ Hi, I’m <b>Lily</b>! <a href={https://github.com/lilyhaschen} target="_blank" rel="noopener noreferrer">@lilyhaschen</a>
+        (｡•̀ᴗ-)✧ Hi, I’m <b>Lily</b>! <a href="https://github.com/lilyhaschen" target="_blank" rel="noopener noreferrer">@lilyhaschen</a>
       </div>
       <div style={{marginBottom:"1.2rem"}}>
         <a href="https://instagram.com/lilyhaschen" target="_blank" rel="noopener noreferrer" style={{marginRight:16}}>📷 Instagram</a>
