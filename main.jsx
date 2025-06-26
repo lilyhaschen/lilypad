@@ -692,12 +692,19 @@ function App() {
 
   // --- Mutators ---
   async function addPost(e) {
-    e.preventDefault();
-    if (!blogTitle || !blogContent) return;
-    await supabase.from("posts").insert([{ title: blogTitle, content: blogContent, date: new Date().toLocaleString() }]);
-    setBlogTitle(""); setBlogContent("");
-    fetchPosts();
+  e.preventDefault();
+  if (!blogTitle || !blogContent) return;
+  const { error } = await supabase.from("posts").insert([
+    { title: blogTitle, content: blogContent, date: new Date().toLocaleString() }
+  ]);
+  if (error) {
+    alert("Supabase insert error: " + error.message);
+    return;
   }
+  setBlogTitle("");
+  setBlogContent("");
+  fetchPosts();
+}
   async function deletePost(id) {
     if (window.prompt("Admin code to delete?") !== ADMIN_CODE) return;
     await supabase.from("posts").delete().eq("id", id);
