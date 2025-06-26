@@ -1528,6 +1528,7 @@ async function addRpgComment(rpg_id) {
     <div className={theme === "light" ? "lily-card" : "lily-card-dark"}>
       <div className={theme === "light" ? "lily-kaomoji" : "lily-kaomoji lily-kaomoji-dark"}>૮꒰ ˶• ༝ •˶꒱ა ♡</div>
       <div className="lily-section-title">RPG Table</div>
+      <div style={{fontSize:"1rem", marginBottom:12}}>Here you can upload RPG material:</div>
       <form onSubmit={addRpg} style={{ margin: "1.2rem 0" }}>
         <input type="file" onChange={e => setRpgFile(e.target.files[0])} />
         <input type="text" placeholder="Title" value={rpgTitle} onChange={e => setRpgTitle(e.target.value)} />
